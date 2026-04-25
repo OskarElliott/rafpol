@@ -1,0 +1,128 @@
+{
+  "services": [
+    {
+      "id": "elektryczne",
+      "name": "Instalacje Elektryczne",
+      "subtitle": "Electrical Wiring & Installation",
+      "description": "Kompleksowe instalacje elektryczne w domach i budynkach komercyjnych.",
+      "expanded": "",
+      "icon": "Zap"
+    },
+    {
+      "id": "foto",
+      "name": "Fotowoltaika",
+      "subtitle": "Solar Panel Installation",
+      "description": "Projektowanie i montaż systemów fotowoltaicznych dla domu i firmy.",
+      "expanded": "",
+      "icon": "Sun"
+    },
+    {
+      "id": "energia",
+      "name": "Magazyny Energii",
+      "subtitle": "Energy Storage Systems",
+      "description": "Instalacja magazynów energii i systemów zarządzania mocą.",
+      "expanded": "",
+      "icon": "Battery"
+    },
+    {
+      "id": "pompa",
+      "name": "Pompy Ciepla",
+      "subtitle": "Heat Pump Installation",
+      "description": "Montaż i serwis powietrznych pomp ciepła powietrze-woda.",
+      "expanded": "",
+      "icon": "Thermometer"
+    },
+    {
+      "id": "sanitarne",
+      "name": "Instalacje Sanitarne",
+      "subtitle": "Plumbing & Heating Systems",
+      "description": "Instalacje CO, wod-kan, węzły ciepła i chłodu.",
+      "expanded": "",
+      "icon": "Droplets"
+    },
+    {
+      "id": "wezly",
+      "name": "Wezly Ciepla i Chlodu",
+      "subtitle": "Heat & Cooling Nodes",
+      "description": "Projektowanie i montaż węzłów cieplnych i chłodniczych.",
+      "expanded": "",
+      "icon": "Gauge"
+    },
+    {
+      "id": "kotlownie",
+      "name": "Kotlownie Gazowe",
+      "subtitle": "Gas Boiler Rooms",
+      "description": "Kompleksowe projektowanie i montaż kotłowni gazowych.",
+      "expanded": "",
+      "icon": "Flame"
+    },
+    {
+      "id": "wentylacja",
+      "name": "Wentylacja i Klimatyzacja",
+      "subtitle": "Ventilation & Air Conditioning",
+      "description": "Montaż systemów wentylacji i klimatyzacji dla domów i firm.",
+      "expanded": "",
+      "icon": "Wind"
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "Profesjonalna ekipa, szybka realizacja instalacji w nowym domu. Polecam!",
+      "author": "Pawel K.",
+      "location": "Kraków"
+    },
+    {
+      "quote": "Naprawili pralke w 2 godziny. Przyszli nastepnego dnia po zgloszeniu. Swietna robota.",
+      "author": "Anna W.",
+      "location": "Wieliczka"
+    },
+    {
+      "quote": "Montaz fotowoltaiki przebiegl sprawnie i zgodnie z harmonogramem.",
+      "author": "Marcin T.",
+      "location": "Niepołomice"
+    },
+    {
+      "quote": "Moja , moja moja moja ",
+      "author": "Rafał",
+      "location": "KRAKÓW"
+    }
+  ],
+  "projects": [
+    {
+      "label": "Instalacja elektryczna — dom jednorodzinny",
+      "location": "Kraków, Bronowice",
+      "alt": "Instalacja elektryczna w Krakowie"
+    },
+    {
+      "label": "Fotowoltaika 8kWp",
+      "location": "Kraków, Krowodrza",
+      "alt": "Fotowoltaika w Krakowie"
+    },
+    {
+      "label": "Powietrzna pompa ciepła",
+      "location": "Wieliczka",
+      "alt": "Pompa ciepla w Wieliczce"
+    },
+    {
+      "label": "Serwis AGD",
+      "location": "Kraków, Stare Miasto",
+      "alt": "Serwis AGD w Krakowie"
+    },
+    {
+      "label": "Rozdzielnica elektryczna",
+      "location": "budynek komercyjny, Kraków",
+      "alt": "Rozdzielnica w Krakowie"
+    },
+    {
+      "label": "Pompa ciepła powietrze-woda",
+      "location": "Kraków, Nowa Huta",
+      "alt": "Pompa ciepla w Krakowie"
+    },
+    {
+      "label": "Wymiana zasobnikow CWU",
+      "location": "Krakow",
+      "alt": "",
+      "image": "https://res.cloudinary.com/dqa01zvts/image/upload/v1777127319/rafpol/t11dd24blinxcvpqyfru.jpg"
+    }
+  ]
+}
