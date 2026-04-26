@@ -23,27 +23,12 @@ const fallback = {
     { quote: 'Montaz fotowoltaiki przebiegl sprawnie i zgodnie z harmonogramem.', author: 'Marcin T.', location: 'Niepolomice' },
   ],
   projects: [
-    { label: 'Instalacja elektryczna — dom jednorodzinny', location: 'Krakow, Bronowice', alt: 'Instalacja elektryczna w Krakowie', image: '' },
-    { label: 'Fotowoltaika 8kWp', location: 'Krakow, Krowodrza', alt: 'Fotowoltaika w Krakowie', image: '' },
-    { label: 'Powietrzna pompa ciepla', location: 'Wieliczka', alt: 'Pompa ciepla w Wieliczce', image: '' },
-    { label: 'Serwis AGD', location: 'Krakow, Stare Miasto', alt: 'Serwis AGD w Krakowie', image: '' },
-    { label: 'Rozdzielnica elektryczna', location: 'budynek komercyjny, Krakow', alt: 'Rozdzielnica w Krakowie', image: '' },
-    { label: 'Pompa ciepla powietrze-woda', location: 'Krakow, Nowa Huta', alt: 'Pompa ciepla w Krakowie', image: '' },
-  ],
-  certificates: [
-    { id: 1, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228404/cert-1_rfmfqr.jpg', alt: 'Certyfikat 1' },
-    { id: 2, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228404/cert-2_exftry.jpg', alt: 'Certyfikat 2' },
-    { id: 3, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228405/cert-3_fvyphb.jpg', alt: 'Certyfikat 3' },
-    { id: 4, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228407/cert-4_dvd08h.jpg', alt: 'Certyfikat 4' },
-    { id: 5, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228406/cert-5_qkbxig.jpg', alt: 'Certyfikat 5' },
-    { id: 6, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228410/cert-6_hxu7k6.jpg', alt: 'Certyfikat 6' },
-    { id: 7, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228404/cert-7_latbl2.jpg', alt: 'Certyfikat 7' },
-    { id: 8, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228405/cert-8_vfq4n0.jpg', alt: 'Certyfikat 8' },
-    { id: 9, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228407/cert-9_onku42.jpg', alt: 'Certyfikat 9' },
-    { id: 10, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228406/cert-10_qwpdqi.jpg', alt: 'Certyfikat 10' },
-    { id: 11, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228407/cert-11_ylckbd.jpg', alt: 'Certyfikat 11' },
-    { id: 12, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228408/cert-12_klj2l2.jpg', alt: 'Certyfikat 12' },
-    { id: 13, url: 'https://res.cloudinary.com/dqa01zvts/image/upload/v1777228409/cert-13_f7t289.jpg', alt: 'Certyfikat 13' },
+    { label: 'Instalacja elektryczna — dom jednorodzinny', location: 'Krakow, Bronowice', alt: 'Instalacja elektryczna w Krakowie' },
+    { label: 'Fotowoltaika 8kWp', location: 'Krakow, Krowodrza', alt: 'Fotowoltaika w Krakowie' },
+    { label: 'Powietrzna pompa ciepla', location: 'Wieliczka', alt: 'Pompa ciepla w Wieliczce' },
+    { label: 'Serwis AGD', location: 'Krakow, Stare Miasto', alt: 'Serwis AGD w Krakowie' },
+    { label: 'Rozdzielnica elektryczna', location: 'budynek komercyjny, Krakow', alt: 'Rozdzielnica w Krakowie' },
+    { label: 'Pompa ciepla powietrze-woda', location: 'Krakow, Nowa Huta', alt: 'Pompa ciepla w Krakowie' },
   ],
 }
 
@@ -68,10 +53,7 @@ export async function GET() {
     if (res.ok) {
       const file = await res.json()
       const decoded = Buffer.from(file.content, 'base64').toString('utf-8')
-      const parsed = JSON.parse(decoded)
-      // Ensure certificates field exists for older siteData.json files
-      if (!parsed.certificates) parsed.certificates = fallback.certificates
-      return NextResponse.json(parsed)
+      return NextResponse.json(JSON.parse(decoded))
     }
   } catch {}
 

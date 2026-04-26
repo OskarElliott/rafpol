@@ -27,20 +27,13 @@ interface Project {
   image: string
 }
 
-interface Certificate {
-  id: number
-  url: string
-  alt: string
-}
-
 interface SiteData {
   services: Service[]
   testimonials: Testimonial[]
   projects: Project[]
-  certificates: Certificate[]
 }
 
-type Tab = 'services' | 'testimonials' | 'projects' | 'certificates'
+type Tab = 'services' | 'testimonials' | 'projects'
 
 const INPUT_CLASS = 'w-full bg-brand-navy border border-white/20 rounded px-4 py-3 text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-amber'
 const TEXTAREA_CLASS = 'w-full bg-brand-navy border border-white/20 rounded px-4 py-3 text-white text-sm resize-none focus:outline-none focus:ring-2 focus:ring-brand-amber'
@@ -54,9 +47,7 @@ export default function AdminDashboard() {
   const [saved, setSaved] = useState(false)
   const [openSection, setOpenSection] = useState<string | null>(null)
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null)
-  const [uploadingCertIndex, setUploadingCertIndex] = useState<number | null>(null)
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([])
-  const certInputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   useEffect(() => {
     fetch('/api/admin/load')
@@ -124,33 +115,6 @@ export default function AdminDashboard() {
     }
   }
 
-  const handleCertUpload = async (i: number, file: File) => {
-    setUploadingCertIndex(i)
-    const formData = new FormData()
-    formData.append('file', file)
-    const res = await fetch('/api/admin/upload', { method: 'POST', body: formData })
-    setUploadingCertIndex(null)
-    if (res.ok) {
-      const { url } = await res.json()
-      const updated = [...data!.certificates]
-      updated[i] = { ...updated[i], url }
-      setData({ ...data!, certificates: updated })
-    }
-  }
-
-  const addCertificate = () => {
-    const newCert: Certificate = {
-      id: Date.now(),
-      url: '',
-      alt: `Certyfikat ${(data?.certificates.length ?? 0) + 1}`,
-    }
-    setData({ ...data!, certificates: [...(data?.certificates ?? []), newCert] })
-  }
-
-  const removeCertificate = (i: number) => {
-    setData({ ...data!, certificates: data!.certificates.filter((_, idx) => idx !== i) })
-  }
-
   if (!data) return (
     <div className="min-h-screen bg-brand-navy flex items-center justify-center">
       <p className="text-white/60">Ładowanie...</p>
@@ -190,11 +154,10 @@ export default function AdminDashboard() {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-8">
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="flex gap-2 mb-8">
           <button className={TAB_CLASS('services')} onClick={() => setTab('services')}>Usługi</button>
           <button className={TAB_CLASS('testimonials')} onClick={() => setTab('testimonials')}>Opinie</button>
           <button className={TAB_CLASS('projects')} onClick={() => setTab('projects')}>Realizacje</button>
-          <button className={TAB_CLASS('certificates')} onClick={() => setTab('certificates')}>Certyfikaty</button>
         </div>
 
         {/* SERVICES */}
@@ -202,7 +165,10 @@ export default function AdminDashboard() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <p className="text-white/50 text-sm">Edytuj usługi. Rozwinięty opis pojawia się po kliknięciu "Dowiedz się więcej".</p>
-              <button onClick={addService} className="flex items-center gap-2 text-brand-amber text-sm font-medium hover:text-brand-amberDark transition-colors">
+              <button
+                onClick={addService}
+                className="flex items-center gap-2 text-brand-amber text-sm font-medium hover:text-brand-amberDark transition-colors"
+              >
                 <Plus size={15} /> Dodaj usługę
               </button>
             </div>
@@ -214,10 +180,16 @@ export default function AdminDashboard() {
                 >
                   <span className="text-white font-semibold">{s.name}</span>
                   <div className="flex items-center gap-3">
-                    <button onClick={(e) => { e.stopPropagation(); removeService(i) }} className="text-red-400 hover:text-red-300 transition-colors p-1">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); removeService(i) }}
+                      className="text-red-400 hover:text-red-300 transition-colors p-1"
+                    >
                       <Trash2 size={14} />
                     </button>
-                    {openSection === s.id ? <ChevronUp size={16} className="text-white/50" /> : <ChevronDown size={16} className="text-white/50" />}
+                    {openSection === s.id
+                      ? <ChevronUp size={16} className="text-white/50" />
+                      : <ChevronDown size={16} className="text-white/50" />
+                    }
                   </div>
                 </button>
                 {openSection === s.id && (
@@ -304,6 +276,8 @@ export default function AdminDashboard() {
                     <Trash2 size={15} />
                   </button>
                 </div>
+
+                {/* Image upload */}
                 <div>
                   <label className={LABEL_CLASS}>Zdjęcie</label>
                   <div className="flex items-center gap-4">
@@ -316,15 +290,27 @@ export default function AdminDashboard() {
                         <ImageIcon size={20} className="text-white/20" />
                       </div>
                     )}
-                    <input type="file" accept="image/*" ref={(el) => { fileInputRefs.current[i] = el }} className="hidden"
-                      onChange={(e) => { const file = e.target.files?.[0]; if (file) handleImageUpload(i, file) }} />
-                    <button onClick={() => fileInputRefs.current[i]?.click()} disabled={uploadingIndex === i}
-                      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-sm px-4 py-2 rounded-lg transition-colors disabled:opacity-60">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      ref={(el) => { fileInputRefs.current[i] = el }}
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0]
+                        if (file) handleImageUpload(i, file)
+                      }}
+                    />
+                    <button
+                      onClick={() => fileInputRefs.current[i]?.click()}
+                      disabled={uploadingIndex === i}
+                      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-sm px-4 py-2 rounded-lg transition-colors disabled:opacity-60"
+                    >
                       <Upload size={14} />
                       {uploadingIndex === i ? 'Wgrywanie...' : p.image ? 'Zmień zdjęcie' : 'Dodaj zdjęcie'}
                     </button>
                   </div>
                 </div>
+
                 <div>
                   <label className={LABEL_CLASS}>Nazwa realizacji</label>
                   <input value={p.label} onChange={(e) => { const updated = [...data.projects]; updated[i] = { ...p, label: e.target.value }; setData({ ...data, projects: updated }) }} className={INPUT_CLASS} />
@@ -335,46 +321,6 @@ export default function AdminDashboard() {
                 </div>
               </div>
             ))}
-          </div>
-        )}
-
-        {/* CERTIFICATES */}
-        {tab === 'certificates' && (
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <p className="text-white/50 text-sm">Zarządzaj certyfikatami i uprawnieniami.</p>
-              <button onClick={addCertificate} className="flex items-center gap-2 text-brand-amber text-sm font-medium hover:text-brand-amberDark transition-colors">
-                <Plus size={15} /> Dodaj certyfikat
-              </button>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {data.certificates.map((cert, i) => (
-                <div key={cert.id} className="bg-brand-navyMid rounded-xl p-4 flex flex-col gap-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-white/60 text-xs">#{i + 1}</span>
-                    <button onClick={() => removeCertificate(i)} className="text-red-400 hover:text-red-300 transition-colors">
-                      <Trash2 size={13} />
-                    </button>
-                  </div>
-                  <div className="relative aspect-[3/4] rounded overflow-hidden bg-brand-navy border border-white/10">
-                    {cert.url ? (
-                      <Image src={cert.url} alt={cert.alt} fill className="object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <ImageIcon size={24} className="text-white/20" />
-                      </div>
-                    )}
-                  </div>
-                  <input type="file" accept="image/*" ref={(el) => { certInputRefs.current[i] = el }} className="hidden"
-                    onChange={(e) => { const file = e.target.files?.[0]; if (file) handleCertUpload(i, file) }} />
-                  <button onClick={() => certInputRefs.current[i]?.click()} disabled={uploadingCertIndex === i}
-                    className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs px-3 py-2 rounded-lg transition-colors disabled:opacity-60 w-full">
-                    <Upload size={12} />
-                    {uploadingCertIndex === i ? 'Wgrywanie...' : cert.url ? 'Zmień' : 'Wgraj zdjęcie'}
-                  </button>
-                </div>
-              ))}
-            </div>
           </div>
         )}
       </main>
