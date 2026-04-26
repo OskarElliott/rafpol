@@ -68,7 +68,9 @@ export const NAV_LINKS = [
   { label: 'Usługi',     href: '#uslugi' },
   { label: 'O nas',      href: '#o-nas' },
   { label: 'Realizacje', href: '#realizacje' },
+  { label: 'Certyfikaty', href: '#certyfikaty' },
   { label: 'Kontakt',    href: '#kontakt' },
+
 ] as const
 
 export const TESTIMONIALS = [
