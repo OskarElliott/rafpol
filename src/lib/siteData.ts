@@ -21,18 +21,17 @@ export interface SiteData {
     image?: string
   }[]
   certificates: {
-  id: number
-  url: string
-  alt: string
-}[]
+    id: number
+    url: string
+    alt: string
+  }[]
 }
 
 export async function getSiteData(): Promise<SiteData> {
   try {
-    const res = await fetch(
-      'https://raw.githubusercontent.com/OskarElliott/rafpol/main/src/lib/siteData.json',
-      { cache: 'no-store' }
-    )
+    // Cache-bust with timestamp to prevent GitHub CDN caching
+    const url = `https://raw.githubusercontent.com/OskarElliott/rafpol/main/src/lib/siteData.json?t=${Date.now()}`
+    const res = await fetch(url, { cache: 'no-store' })
     if (res.ok) {
       return await res.json()
     }
@@ -43,5 +42,5 @@ export async function getSiteData(): Promise<SiteData> {
     testimonials: [...TESTIMONIALS],
     projects: PROJECTS.map((p) => ({ ...p, image: '' })),
     certificates: [],
-}
+  }
 }
