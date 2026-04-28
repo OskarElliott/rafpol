@@ -26,7 +26,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>
+      <body className="overflow-x-hidden">
         {/* Skip link */}
         <a href="#main-content" className="skip-link">
           Przejdź do treści

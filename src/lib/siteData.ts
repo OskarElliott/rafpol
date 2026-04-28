@@ -20,6 +20,11 @@ export interface SiteData {
     alt: string
     image?: string
   }[]
+  certificates: {
+  id: number
+  url: string
+  alt: string
+}[]
 }
 
 export async function getSiteData(): Promise<SiteData> {
@@ -37,5 +42,6 @@ export async function getSiteData(): Promise<SiteData> {
     services: SERVICES.map((s) => ({ ...s, expanded: '' })),
     testimonials: [...TESTIMONIALS],
     projects: PROJECTS.map((p) => ({ ...p, image: '' })),
-  }
+    certificates: [],
+}
 }

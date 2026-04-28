@@ -12,8 +12,10 @@ interface Certificate {
   alt: string
 }
 
-export function CertificatesGrid({ certificates = [] }: { certificates?: Certificate[] }) {
+export function CertificatesGrid({ certificates }: { certificates: Certificate[] }) {
   const [selected, setSelected] = useState<string | null>(null)
+
+  if (!certificates || certificates.length === 0) return null
 
   return (
     <>
@@ -30,7 +32,7 @@ export function CertificatesGrid({ certificates = [] }: { certificates?: Certifi
             variants={fadeUpVariant}
             onClick={() => setSelected(cert.url)}
             className="relative aspect-[3/4] rounded-lg overflow-hidden border border-brand-border shadow-card hover:shadow-card-hover hover:border-brand-navyMid transition-all duration-300 group"
-            aria-label={`Otwórz ${cert.alt}`}
+            aria-label={`Otworz ${cert.alt}`}
           >
             <Image
               src={cert.url}
@@ -49,7 +51,6 @@ export function CertificatesGrid({ certificates = [] }: { certificates?: Certifi
           onClick={() => setSelected(null)}
           role="dialog"
           aria-modal="true"
-          aria-label="Podgląd certyfikatu"
         >
           <button
             className="absolute top-4 right-4 text-white/70 hover:text-white p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
