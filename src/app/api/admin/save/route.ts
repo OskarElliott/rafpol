@@ -22,8 +22,13 @@ async function getFileSha(): Promise<string | null> {
   return data.sha ?? null
 }
 
+async function triggerDeploy() {
+  const hookUrl = process.env.VERCEL_DEPLOY_HOOK
+  if (!hookUrl) return
+  await fetch(hookUrl, { method: 'POST' })
+}
+
 export async function POST(req: NextRequest) {
-  // Auth check
   const cookieStore = cookies()
   const auth = cookieStore.get('admin_auth')
   if (!auth || auth.value !== process.env.ADMIN_PASSWORD) {
@@ -58,6 +63,9 @@ export async function POST(req: NextRequest) {
     const err = await res.json()
     return NextResponse.json({ error: err }, { status: 500 })
   }
+
+  // Trigger Vercel redeploy after successful save
+  await triggerDeploy()
 
   return NextResponse.json({ success: true })
 }
