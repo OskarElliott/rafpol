@@ -7,10 +7,13 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   body {
     @apply text-brand-slate bg-white antialiased;
+    overflow-x: hidden;
   }
 
   /* Remove outline for mouse users, keep for keyboard */
