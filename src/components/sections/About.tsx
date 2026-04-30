@@ -30,13 +30,13 @@ const USP_ITEMS = [
     icon: Star,
     title: 'Gwarancja na każdą usługę',
     description:
-      'Udzielamy pisemnej gwarancji na wszystkie prace elektryczne i naprawy AGD.',
+      'Udzielamy pisemnej gwarancji na wszystkie wykonane przez nas prace.',
   },
   {
     icon: Clock,
-    title: 'Jedna firma, wszystko',
+    title: 'Jedna firma, wszystkie usługi',
     description:
-      'Od instalacji przez serwis AGD po fotowoltaikę — obsługujesz się u jednego sprawdzonego wykonawcy.',
+      'Od instalacji po fotowoltaikę z magazynem energii — obsługujesz się u jednego sprawdzonego wykonawcy.',
   },
 ] as const
 
@@ -50,7 +50,6 @@ export function About() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-          {/* Left — image */}
           <motion.div
             variants={slideLeftVariant}
             initial="hidden"
@@ -67,7 +66,6 @@ export function About() {
             />
           </motion.div>
 
-          {/* Right — content */}
           <motion.div
             variants={slideRightVariant}
             initial="hidden"
@@ -77,14 +75,13 @@ export function About() {
           >
             <SectionLabel>Dlaczego Rafpol</SectionLabel>
             <h2 className="text-3xl md:text-[2.25rem] font-bold text-brand-slate mt-3 leading-[1.2]">
-              Twój sprawdzony partner w elektryce i AGD
+              Twój sprawdzony partner w elektryce i sanitarce
             </h2>
             <p className="text-brand-muted text-base leading-relaxed mt-4">
               Od ponad 10 lat obsługujemy klientów indywidualnych i firmy w Krakowie i okolicach.
               Łączymy doświadczenie z nowoczesnymi technologiami, by każda realizacja była pewna i trwała.
             </p>
 
-            {/* USP rows */}
             <motion.ul
               variants={staggerContainer}
               initial="hidden"

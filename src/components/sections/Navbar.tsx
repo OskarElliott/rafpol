@@ -10,6 +10,7 @@ import { useScrolled } from '@/hooks/useScrolled'
 import { NAV_LINKS } from '@/lib/constants'
 
 const PHONE = '+48 503 445 333'
+const GOOGLE_MAPS_URL = 'https://maps.app.goo.gl/TK6XufFGHiCj3UDe8'
 
 export function Navbar() {
   const scrolled = useScrolled(60)
@@ -28,9 +29,11 @@ export function Navbar() {
         aria-label="Glowna nawigacja"
       >
         <a
-          href="#"
+          href={GOOGLE_MAPS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber rounded-sm"
-          aria-label="Rafpol Elektric — strona glowna"
+          aria-label="Rafpol Elektric — wizytowka Google"
         >
           <Image
             src="/images/logo.png"
