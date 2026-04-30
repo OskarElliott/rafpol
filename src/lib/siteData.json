@@ -26,7 +26,7 @@
     },
     {
       "id": "pompa",
-      "name": "Pompy Ciepla",
+      "name": "Pompy Ciepła",
       "subtitle": "Heat Pump Installation",
       "description": "Montaż i serwis powietrznych pomp ciepła powietrze-woda.",
       "expanded": "",
@@ -42,7 +42,7 @@
     },
     {
       "id": "wezly",
-      "name": "Wezly Ciepla i Chlodu",
+      "name": "Węzły Ciepła i Chłodu",
       "subtitle": "Heat & Cooling Nodes",
       "description": "Projektowanie i montaż węzłów cieplnych i chłodniczych.",
       "expanded": "",
@@ -50,7 +50,7 @@
     },
     {
       "id": "kotlownie",
-      "name": "Kotlownie Gazowe",
+      "name": "Kotłownie Gazowe",
       "subtitle": "Gas Boiler Rooms",
       "description": "Kompleksowe projektowanie i montaż kotłowni gazowych.",
       "expanded": "",
