@@ -66,9 +66,23 @@ export function Contact() {
       return
     }
     setSubmitting(true)
-    await new Promise((res) => setTimeout(res, 800))
-    setSubmitting(false)
-    setSubmitted(true)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setErrors({ name: data.error ?? 'Nie udało się wysłać wiadomości. Spróbuj ponownie.' })
+        return
+      }
+      setSubmitted(true)
+    } catch {
+      setErrors({ name: 'Nie udało się wysłać wiadomości. Spróbuj ponownie.' })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
