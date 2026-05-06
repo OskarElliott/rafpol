@@ -43,7 +43,7 @@ export function Contact() {
 
   const validate = (): FormErrors => {
     const e: FormErrors = {}
-    if (!form.name.trim()) e.name = 'Imie i nazwisko jest wymagane.'
+    if (!form.name.trim()) e.name = 'Imię i nazwisko jest wymagane.'
     if (!form.phone.trim()) {
       e.phone = 'Numer telefonu jest wymagany.'
     } else if (!validatePhone(form.phone)) {
@@ -164,7 +164,7 @@ export function Contact() {
                 >
                   <motion.div variants={fadeUpVariant}>
                     <FormField
-                      label="Imie i Nazwisko"
+                      label="Imię i Nazwisko"
                       id="contact-name"
                       fieldType="text"
                       placeholder="Jan Kowalski"
@@ -192,7 +192,7 @@ export function Contact() {
 
                   <motion.div variants={fadeUpVariant}>
                     <FormField
-                      label="Rodzaj uslugi"
+                      label="Rodzaj usługi"
                       id="contact-service"
                       fieldType="select"
                       required
@@ -210,10 +210,10 @@ export function Contact() {
 
                   <motion.div variants={fadeUpVariant}>
                     <FormField
-                      label="Wiadomosc"
+                      label="Wiadomość"
                       id="contact-message"
                       fieldType="textarea"
-                      placeholder="Opisz krotko czego potrzebujesz..."
+                      placeholder="Opisz krótko, czego potrzebujesz..."
                       value={form.message}
                       onChange={(e) => setForm((f) => ({ ...f, message: (e.target as HTMLTextAreaElement).value }))}
                     />
