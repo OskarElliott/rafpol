@@ -3,6 +3,8 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+const TARGET_EMAIL = 'rafpolelektric@gmail.com'
+
 const SERVICE_LABELS: Record<string, string> = {
   elektryczne: 'Instalacje Elektryczne',
   foto: 'Fotowoltaika',
@@ -11,6 +13,7 @@ const SERVICE_LABELS: Record<string, string> = {
   sanitarne: 'Instalacje Sanitarne',
   wezly: 'Węzły Ciepła i Chłodu',
   kotlownie: 'Kotłownie Gazowe',
+  wentylacja: 'Wentylacja i Klimatyzacja',
 }
 
 function validatePhone(value: string) {
@@ -19,70 +22,92 @@ function validatePhone(value: string) {
 }
 
 export async function POST(req: NextRequest) {
-  let body: unknown
   try {
-    body = await req.json()
-  } catch {
-    return NextResponse.json({ error: 'Nieprawidłowe dane.' }, { status: 400 })
+    const body = await req.json()
+    const { name, phone, service, message } = body
+
+    // Server-side validation
+    if (!name || typeof name !== 'string' || !name.trim()) {
+      return NextResponse.json({ error: 'Imię i nazwisko jest wymagane.' }, { status: 400 })
+    }
+    if (!phone || typeof phone !== 'string' || !validatePhone(phone)) {
+      return NextResponse.json({ error: 'Podaj prawidłowy numer telefonu.' }, { status: 400 })
+    }
+    if (!service || typeof service !== 'string') {
+      return NextResponse.json({ error: 'Wybierz rodzaj usługi.' }, { status: 400 })
+    }
+
+    const serviceLabel = SERVICE_LABELS[service] ?? service
+    const messageText = (message && typeof message === 'string') ? message.trim() : ''
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background-color: #0F172A; color: white; padding: 24px; border-radius: 8px 8px 0 0;">
+          <h2 style="margin: 0; font-size: 20px;">Nowe zapytanie ze strony</h2>
+          <p style="margin: 4px 0 0 0; color: #F59E0B; font-size: 14px;">rafpolelektric.pl</p>
+        </div>
+        <div style="background-color: #f8fafc; padding: 24px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #1e293b; width: 140px;">Imię i Nazwisko:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0; color: #1e293b;">${escapeHtml(name)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #1e293b;">Telefon:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                <a href="tel:${escapeHtml(phone)}" style="color: #D97706; font-weight: bold; font-size: 18px; text-decoration: none;">${escapeHtml(phone)}</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #1e293b;">Rodzaj usługi:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0; color: #1e293b;">${escapeHtml(serviceLabel)}</td>
+            </tr>
+            ${messageText ? `
+            <tr>
+              <td style="padding: 12px 0; font-weight: bold; color: #1e293b; vertical-align: top;">Wiadomość:</td>
+              <td style="padding: 12px 0; color: #1e293b; white-space: pre-wrap;">${escapeHtml(messageText)}</td>
+            </tr>
+            ` : ''}
+          </table>
+        </div>
+      </div>
+    `
+
+    const text = `
+NOWE ZAPYTANIE - RAFPOL ELEKTRIC
+
+Imię i Nazwisko: ${name}
+Telefon: ${phone}
+Rodzaj usługi: ${serviceLabel}
+${messageText ? `\nWiadomość:\n${messageText}` : ''}
+    `.trim()
+
+    const { data, error } = await resend.emails.send({
+      from: 'Rafpol Elektric <onboarding@resend.dev>',
+      to: [TARGET_EMAIL],
+      replyTo: phone.includes('@') ? phone : undefined,
+      subject: `Nowe zapytanie - ${serviceLabel} - ${name}`,
+      html,
+      text,
+    })
+
+    if (error) {
+      console.error('Resend error:', error)
+      return NextResponse.json({ error: 'Błąd wysyłki. Proszę spróbować ponownie.' }, { status: 500 })
+    }
+
+    return NextResponse.json({ success: true, id: data?.id })
+  } catch (err) {
+    console.error('Contact route error:', err)
+    return NextResponse.json({ error: 'Błąd serwera. Proszę spróbować ponownie.' }, { status: 500 })
   }
+}
 
-  const { name, phone, service, message } = body as Record<string, string>
-
-  if (!name?.trim()) {
-    return NextResponse.json({ error: 'Imię i nazwisko jest wymagane.' }, { status: 400 })
-  }
-  if (!phone?.trim() || !validatePhone(phone)) {
-    return NextResponse.json({ error: 'Podaj prawidłowy numer telefonu.' }, { status: 400 })
-  }
-  if (!service || !SERVICE_LABELS[service]) {
-    return NextResponse.json({ error: 'Wybierz rodzaj usługi.' }, { status: 400 })
-  }
-
-  const serviceLabel = SERVICE_LABELS[service]
-
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #1a2744; border-bottom: 3px solid #f59e0b; padding-bottom: 8px;">
-        Nowe zapytanie — Rafpol Elektric
-      </h2>
-
-      <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
-        <tr style="background: #f3f4f6;">
-          <td style="padding: 12px 16px; font-weight: bold; width: 160px; color: #374151;">Imię i Nazwisko</td>
-          <td style="padding: 12px 16px; color: #111827;">${name.trim()}</td>
-        </tr>
-        <tr>
-          <td style="padding: 12px 16px; font-weight: bold; color: #374151;">Numer telefonu</td>
-          <td style="padding: 12px 16px; font-size: 20px; font-weight: bold; color: #f59e0b;">${phone.trim()}</td>
-        </tr>
-        <tr style="background: #f3f4f6;">
-          <td style="padding: 12px 16px; font-weight: bold; color: #374151;">Rodzaj usługi</td>
-          <td style="padding: 12px 16px; color: #111827;">${serviceLabel}</td>
-        </tr>
-        <tr>
-          <td style="padding: 12px 16px; font-weight: bold; color: #374151; vertical-align: top;">Wiadomość</td>
-          <td style="padding: 12px 16px; color: #111827; white-space: pre-wrap;">${message?.trim() || '—'}</td>
-        </tr>
-      </table>
-
-      <p style="margin-top: 24px; font-size: 13px; color: #6b7280;">
-        Wiadomość wysłana przez formularz kontaktowy na rafpolelektric.pl
-      </p>
-    </div>
-  `
-
-  const { error } = await resend.emails.send({
-    from: 'Rafpol Elektric <kontakt@rafpolelektric.pl>',
-    to: 'rafpolelektric@gmail.com',
-    subject: 'Nowe zapytanie - Rafpol Elektric',
-    html,
-    replyTo: undefined,
-  })
-
-  if (error) {
-    console.error('Resend error:', error)
-    return NextResponse.json({ error: 'Nie udało się wysłać wiadomości. Spróbuj ponownie.' }, { status: 500 })
-  }
-
-  return NextResponse.json({ success: true })
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
 }
