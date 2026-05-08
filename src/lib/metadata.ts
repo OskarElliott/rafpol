@@ -77,7 +77,8 @@ export const jsonLd = {
   '@type': 'ElectricalContractor',
   '@id': `${SITE_URL}/#business`,
   name: 'Rafpol Elektric',
-  alternateName: 'Rafpol',
+  alternateName: ['Rafpol', 'Rafpol-Elektric Instalacje, Serwis Naprawa AGD, Pralki, Elektronarzędzi, Spec, Fotowoltaika, Magazyny Energii'],
+  legalName: 'Rafpol Elektric',
   description:
     'Usługi elektryczne, instalacje, fotowoltaika i magazyny energii w Krakowie i okolicach. Ponad 10 lat doświadczenia.',
   url: SITE_URL,
