@@ -107,20 +107,13 @@ export const jsonLd = {
     geoRadius: '50000',
   },
   openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-      ],
-      opens: '07:00',
-      closes: '20:00',
-    },
-  ],
+  {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '08:00',
+    closes: '17:00',
+  },
+],
 hasOfferCatalog: {
   '@type': 'OfferCatalog',
   name: 'Usługi Rafpol Elektric',
