@@ -129,7 +129,7 @@ hasOfferCatalog: {
   ],
 },
   sameAs: [
-    // Wklej tutaj URL do Google Business Profile po założeniu
+    'https://maps.app.goo.gl/etnMUawy2EqKrJuw8'
     // np. 'https://maps.app.goo.gl/...'
     // I do innych profili (Facebook, OLX, Pkt.pl) jeśli istnieją
   ],
