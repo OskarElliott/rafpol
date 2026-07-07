@@ -106,9 +106,21 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/5 mt-10 pt-6 flex items-center">
+        <div className="border-t border-white/5 mt-10 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <p className="text-white/40 text-xs">
             © {year} Rafpol Elektric. Wszelkie prawa zastrzeżone.
+          </p>
+          <p className="text-white/40 text-xs">
+            Made by{' '}
+            <a
+              href="https://sonadesign.pl"
+              target="_blank"
+              rel="noopener"
+              className="hover:opacity-70 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-amber rounded-sm"
+            >
+              <span className="font-semibold tracking-[-0.02em]">Sona</span>
+              <span style={{ color: '#E5322B' }}>.</span>
+            </a>
           </p>
         </div>
 
